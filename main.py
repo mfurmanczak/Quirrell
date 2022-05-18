@@ -5,20 +5,22 @@ import numpy as np
 #import matplotlib for ploting graphs
 import matplotlib.pyplot as plt
 #import sklearn features used for calculating RMSE, fit regression model and Polynomial features
+from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
 #import seaborn for heatmaps
 import seaborn as sns
 #import sklearn features for score functions
-from sklearn.feature_selection import chi2
 from sklearn.feature_selection import SelectKBest  
 from sklearn.feature_selection import f_classif 
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
 from sklearn import preprocessing
-from sklearn import utils
-
+from sklearn.linear_model import LogisticRegression
+#import classification report
+from sklearn.metrics import classification_report
+#import KFold for tuning tests
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
 #read xlsx file/create dataframe
 df = pd.read_excel('data/datasets.xlsx')
 #drop unnecessary fields from the dataframe
@@ -30,50 +32,72 @@ df['Level'] = df['Level'].replace(['Medium'],'2')
 df['Level'] = df['Level'].replace(['High'],'3')
 df['Level'] = df['Level'].astype(np.int64)
 # debugging
-# print(df.info())
-# #calculate mean and standard deviation
-df.agg({'mean','std'})
-# #normalise data and print out head
-df = (df-df.mean())/df.std()
-print(df.agg({'mean','std'}))
+# print(df.head())
+#calculate mean and standard deviation
+df_aggr = df.agg({'mean','std'})
+#normalise data and print out head
+pd = (df-df.mean())/df.std()
+# print(df.agg({'mean','std'}))
 
-df_corr = df.corr()
+pd = df.corr()
 # print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(df_corr, cmap='RdPu', interpolation='nearest')
-sns.heatmap(df_corr,  cmap='RdPu', annot=True, annot_kws={"size":4.5})
+sns.heatmap(pd,  cmap='RdPu', annot=True, annot_kws={"size":4.5})
 
-#split to test and training set
+#split to input and output
 array = df.values
 X = array[:, 0:23]
 y = array[:, 23]
-
+# print(array)
 # print(X.shape)
-# print(y.shape)
+# print(y)
+
 # X = df_diabetes['BMI']
 # y = df_diabetes['Y']
 
 # print(array)
 
-
-# test = SelectKBest(score_func=chi2, k=10)
-# fit.scores = fit(X,y)
+bestfeatures = SelectKBest(score_func=f_classif, k=10)
+fit = bestfeatures.fit(X,y)
 # print(fit.scores_)
+# print(fit.pvalues_)
 
-# features = fit.transform(X)
-# print(features[0:5,:])
+bestfeatures = fit.transform(X)
+# print(get_feature_names_out(input_features=None))
+# print(bestfeatures[0:10,:])
+# print(bestfeatures.shape)
 
-# x_train, x_test, y_train, y_test = train_test_split(features, y, test_size=0.33, random_state=0)
+# f = open("demofile2.txt", "a")
+# f.write(str(bestfeatures[0:100, :]))
+# f.close()
+# //////////////////////////////////////////
+#split into test and training set
+x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
 
-# Model1 = LogisticRegression()
-# Model1.fit(x_train, y_train) 
+# print(np.info(object=bestfeatures))
 
-#create new dataframe
-# results = pd.DataFrame({'X':df['Age'],'y':y,'lvl_pred':lvl_pred})
-# ax1 = results.plot.scatter(x='X', y='y')
-# ax2 = results.plot.scatter(x='X', y='lvl_pred', ax=ax1, c='k')
+#build the model
+Model1 = LogisticRegression(solver='liblinear', random_state=0)
+Model1.fit(x_train, y_train)
 
-# rmse = (np.sqrt(mean_squared_error(y, y_pred)))
-# print(rmse)
+score = Model1.score(x_test, y_test)
+#make predictions
+predictions1 = Model1.predict(x_test)
+# print(predictions1)
+mse = mean_absolute_error(y_test, predictions1)
+# print(mse)
+
+# print(classification_report(y_test, predictions1))
+
+#test options and evaluation metric
+num_folds = 11
+# seed = 3
+scoring = 'accuracy'
+
+kfold = KFold(n_splits=num_folds, random_state=None)
+cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
+msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
+print(msg)
 
 #show plots
 plt.show()
