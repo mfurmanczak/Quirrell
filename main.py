@@ -36,13 +36,13 @@ df['Level'] = df['Level'].astype(np.int64)
 #calculate mean and standard deviation
 df_aggr = df.agg({'mean','std'})
 #normalise data and print out head
-pd = (df-df.mean())/df.std()
+newdata = (df-df.mean())/df.std()
 # print(df.agg({'mean','std'}))
 
-pd = df.corr()
+newdata = df.corr()
 # print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(df_corr, cmap='RdPu', interpolation='nearest')
-sns.heatmap(pd,  cmap='RdPu', annot=True, annot_kws={"size":4.5})
+sns.heatmap(newdata, cmap='RdPu', annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
@@ -57,39 +57,47 @@ y = array[:, 23]
 
 # print(array)
 
-bestfeatures = SelectKBest(score_func=f_classif, k=10)
-fit = bestfeatures.fit(X,y)
-# print(fit.scores_)
-# print(fit.pvalues_)
+for i in range(1,24):
+    f = open("results.txt", "a")
+    bestfeatures = SelectKBest(score_func=f_classif, k=i)
+    fit = bestfeatures.fit(X,y)
+    # print(fit.scores_)
+    # print(fit.pvalues_)
 
-bestfeatures = fit.transform(X)
-# print(get_feature_names_out(input_features=None))
-# print(bestfeatures[0:10,:])
-# print(bestfeatures.shape)
+    bestfeatures = fit.transform(X)
+    # print(get_feature_names_out(input_features=None))
+    # print(bestfeatures[0:10,:])
+    # print(bestfeatures.shape)
 
-# f = open("demofile2.txt", "a")
-# f.write(str(bestfeatures[0:100, :]))
-# f.close()
-# //////////////////////////////////////////
-#split into test and training set
-x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
+    # f = open("demofile2.txt", "a")
+    # f.write(str(bestfeatures[0:100, :]))
+    # f.close()
+    # //////////////////////////////////////////
+    #split into test and training set
+    x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
 
-# print(np.info(object=bestfeatures))
+    # print(np.info(object=bestfeatures))
 
-#build the model
-Model1 = LogisticRegression(solver='liblinear', random_state=0)
-Model1.fit(x_train, y_train)
+    #build the model
+    Model1 = LogisticRegression(solver='liblinear', random_state=0)
+    Model1.fit(x_train, y_train)
 
-score = Model1.score(x_test, y_test)
-#make predictions
-predictions1 = Model1.predict(x_test)
-# print(predictions1)
-mse = mean_absolute_error(y_test, predictions1)
-# print(mse)
+    score = Model1.score(x_test, y_test)
+    #make predictions
+    predictions1 = Model1.predict(x_test)
+    # print(predictions1)
+    mse = mean_absolute_error(y_test, predictions1)
+    # print(mse)
 
-# print(classification_report(y_test, predictions1))
+    # print(classification_report(y_test, predictions1))
+    f.write("*****************************************************\n")
+    f.write("k = "+ str(i))    
+    f.write("\n")
+    f.write(classification_report(y_test, predictions1))
+    f.write("\n")
+    f.close()
 
-#test options and evaluation metric
+    #test options and evaluation metric
 num_folds = 11
 # seed = 3
 scoring = 'accuracy'
@@ -97,7 +105,11 @@ scoring = 'accuracy'
 kfold = KFold(n_splits=num_folds, random_state=None)
 cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
 msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
-print(msg)
+# print(msg)
+
+#plot scattergram to verify relevancy of the results
+results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-plt.show()
+# plt.show()
