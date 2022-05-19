@@ -21,6 +21,9 @@ from sklearn.metrics import classification_report
 #import KFold for tuning tests
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
+#import accuracy_score to retrieve accuracy from predictions
+from sklearn.metrics import accuracy_score
+
 #read xlsx file/create dataframe
 df = pd.read_excel('data/datasets.xlsx')
 #drop unnecessary fields from the dataframe
