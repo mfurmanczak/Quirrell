@@ -114,4 +114,4 @@ results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
 results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-# plt.show()
+plt.show()
