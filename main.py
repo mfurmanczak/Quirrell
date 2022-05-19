@@ -56,7 +56,8 @@ y = array[:, 23]
 # y = df_diabetes['Y']
 
 # print(array)
-
+indexes = []
+accuracies = []
 for i in range(1,24):
     f = open("results.txt", "a")
     bestfeatures = SelectKBest(score_func=f_classif, k=i)
@@ -88,14 +89,15 @@ for i in range(1,24):
     # print(predictions1)
     mse = mean_absolute_error(y_test, predictions1)
     # print(mse)
-
+    indexes.append(i)
+    accuracies.append(accuracy_score(y_test, predictions1))
     # print(classification_report(y_test, predictions1))
-    f.write("*****************************************************\n")
-    f.write("k = "+ str(i))    
-    f.write("\n")
-    f.write(classification_report(y_test, predictions1))
-    f.write("\n")
-    f.close()
+    # f.write("*****************************************************\n")
+    # f.write("k = "+ str(i))    
+    # f.write("\n")
+    # f.write(classification_report(y_test, predictions1))
+    # f.write("\n")
+    # f.close()
 
 #test options and evaluation metric
 # num_folds = 11
