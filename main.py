@@ -102,8 +102,8 @@ for i in range(1,24):
     # f.close()
 
 #accuracy scattergram and plot
-# sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
-# sc.plot(x='indexes', y='accuracies')
+sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
+sc.plot(x='indexes', y='accuracies')
 # sc.plot.scatter(x='indexes', y='accuracies')
 # plt.scatter(indexes,accuracies)
 
@@ -118,8 +118,8 @@ for i in range(1,24):
 # print(msg)
 
 #plot scattergram to verify relevancy of the results
-# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-# results.plot.scatter(x='y_test', y='predictions1')
+results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 plt.show()
