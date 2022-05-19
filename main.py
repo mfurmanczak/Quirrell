@@ -7,12 +7,11 @@ import matplotlib.pyplot as plt
 #import sklearn features used for calculating RMSE, fit regression model and Polynomial features
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import LinearRegression
 #import seaborn for heatmaps
 import seaborn as sns
 #import sklearn features for score functions
-from sklearn.feature_selection import SelectKBest  
-from sklearn.feature_selection import f_classif 
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2 
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
@@ -58,8 +57,8 @@ y = array[:, 23]
 # print(array)
 
 for i in range(1,24):
-    f = open("results.txt", "a")
-    bestfeatures = SelectKBest(score_func=f_classif, k=i)
+    f = open("resultschi2.txt", "a")
+    bestfeatures = SelectKBest(score_func=chi2, k=i)
     fit = bestfeatures.fit(X,y)
     # print(fit.scores_)
     # print(fit.pvalues_)
@@ -90,6 +89,7 @@ for i in range(1,24):
     # print(mse)
 
     # print(classification_report(y_test, predictions1))
+    f.write("****************CLASSIFICATION REPORT****************\n")
     f.write("*****************************************************\n")
     f.write("k = "+ str(i))    
     f.write("\n")
