@@ -97,14 +97,14 @@ for i in range(1,24):
     f.write("\n")
     f.close()
 
-    #test options and evaluation metric
-num_folds = 11
+#test options and evaluation metric
+# num_folds = 11
 # seed = 3
-scoring = 'accuracy'
+# scoring = 'accuracy'
 
-kfold = KFold(n_splits=num_folds, random_state=None)
-cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
-msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
+# kfold = KFold(n_splits=num_folds, random_state=None)
+# cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
+# msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 # print(msg)
 
 #plot scattergram to verify relevancy of the results
