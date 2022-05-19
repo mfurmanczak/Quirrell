@@ -99,13 +99,19 @@ for i in range(1,24):
     # f.write("\n")
     # f.close()
 
+#accuracy scattergram and plot
+sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
+sc.plot(x='indexes', y='accuracies')
+# sc.plot.scatter(x='indexes', y='accuracies')
+# plt.scatter(indexes,accuracies)
+
 #test options and evaluation metric
-# num_folds = 11
+# num_folds = 5
 # seed = 3
 # scoring = 'accuracy'
 
 # kfold = KFold(n_splits=num_folds, random_state=None)
-# cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
+# cv_results = cross_val_score(Model1, x_train, y_train, scoring='accuracy', cv=kfold)
 # msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 # print(msg)
 
