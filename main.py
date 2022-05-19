@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 #import matplotlib for ploting graphs
 import matplotlib.pyplot as plt
-#import sklearn features used for calculating RMSE, fit regression model and Polynomial features
+#import sklearn features used for calculating RMSE, fitting regression model and Polynomial features
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 #import seaborn for heatmaps
@@ -20,9 +20,12 @@ from sklearn.metrics import classification_report
 #import KFold for tuning tests
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
+#import accuracy_score to retrieve accuracy from predictions
+from sklearn.metrics import accuracy_score
+
 #read xlsx file/create dataframe
 df = pd.read_excel('data/datasets.xlsx')
-#drop unnecessary fields from the dataframe
+#remove unnecessary fields from the dataframe
 df = df.drop('Patient Id', axis = 1)
 
 #convert non numerical values
@@ -36,12 +39,13 @@ df['Level'] = df['Level'].astype(np.int64)
 df_aggr = df.agg({'mean','std'})
 #normalise data and print out head
 newdata = (df-df.mean())/df.std()
-# print(df.agg({'mean','std'}))
+#print(df.agg({'mean','std'}))
 
 newdata = df.corr()
-# print(df_corr.round(2).head(len(df_corr)))
-# plt.imshow(df_corr, cmap='RdPu', interpolation='nearest')
-sns.heatmap(newdata, cmap='RdPu', annot=True, annot_kws={"size":4.5})
+#print(df_corr.round(2).head(len(df_corr)))
+# plt.imshow(newdata, cmap='RdPu', interpolation='nearest')
+cmap = sns.diverging_palette(240,240, as_cmap=True)
+sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
@@ -51,13 +55,13 @@ y = array[:, 23]
 # print(X.shape)
 # print(y)
 
-# X = df_diabetes['BMI']
-# y = df_diabetes['Y']
-
-# print(array)
+#array to store the indexes and corresponding accuracies
+indexes = []
+accuracies = []
 
 for i in range(1,24):
-    f = open("resultschi2.txt", "a")
+    #open file for results
+    
     bestfeatures = SelectKBest(score_func=chi2, k=i)
     fit = bestfeatures.fit(X,y)
     # print(fit.scores_)
@@ -68,10 +72,6 @@ for i in range(1,24):
     # print(bestfeatures[0:10,:])
     # print(bestfeatures.shape)
 
-    # f = open("demofile2.txt", "a")
-    # f.write(str(bestfeatures[0:100, :]))
-    # f.close()
-    # //////////////////////////////////////////
     #split into test and training set
     x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
 
@@ -87,29 +87,39 @@ for i in range(1,24):
     # print(predictions1)
     mse = mean_absolute_error(y_test, predictions1)
     # print(mse)
-
+    indexes.append(i)
+    accuracies.append(accuracy_score(y_test, predictions1))
     # print(classification_report(y_test, predictions1))
-    f.write("****************CLASSIFICATION REPORT****************\n")
-    f.write("*****************************************************\n")
-    f.write("k = "+ str(i))    
-    f.write("\n")
-    f.write(classification_report(y_test, predictions1))
-    f.write("\n")
-    f.close()
 
-    #test options and evaluation metric
-num_folds = 11
+#register results into results file
+    # f = open("resultschi2.txt", "a")
+    # f.write("****************CLASSIFICATION REPORT****************\n")
+    # f.write("*****************************************************\n")
+    # f.write("k = "+ str(i))    
+    # f.write("\n")
+    # f.write(classification_report(y_test, predictions1))
+    # f.write("\n")
+    # f.close()
+
+#accuracy scattergram and plot
+# sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
+# sc.plot(x='indexes', y='accuracies')
+# sc.plot.scatter(x='indexes', y='accuracies')
+# plt.scatter(indexes,accuracies)
+
+#test options and evaluation metric
+# num_folds = 5
 # seed = 3
-scoring = 'accuracy'
+# scoring = 'accuracy'
 
-kfold = KFold(n_splits=num_folds, random_state=None)
-cv_results = cross_val_score(Model1, x_train, y_train, scoring=scoring, cv=kfold)
-msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
+# kfold = KFold(n_splits=num_folds, random_state=None)
+# cv_results = cross_val_score(Model1, x_train, y_train, scoring='accuracy', cv=kfold)
+# msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 # print(msg)
 
 #plot scattergram to verify relevancy of the results
-results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-results.plot.scatter(x='y_test', y='predictions1')
+# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+# results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-# plt.show()
+plt.show()
