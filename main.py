@@ -124,4 +124,3 @@ results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 plt.show()
-# changed
