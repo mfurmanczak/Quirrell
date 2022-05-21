@@ -63,7 +63,7 @@ y = array[:, 23]
 # indexes = []
 # accuracies = []
 # for i in range(1,24):
-# f = open("results.txt", "a")
+# f = open("resultsanova.txt", "a")
 bestfeatures = SelectKBest(score_func=f_classif, k=10)
 fit = bestfeatures.fit(X,y)
 # print(fit.scores_)
