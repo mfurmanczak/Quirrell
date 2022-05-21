@@ -124,7 +124,7 @@ mse = mean_absolute_error(y_test, predictions1)
 # results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-# plt.show()
+plt.show()
 
 #testing 
 testing = pd.read_excel('data/testingset.xlsx')
