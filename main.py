@@ -45,7 +45,8 @@ newdata = (df-df.mean())/df.std()
 newdata = df.corr()
 # print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(df_corr, cmap='RdPu', interpolation='nearest')
-sns.heatmap(newdata, cmap='RdPu', annot=True, annot_kws={"size":4.5})
+# cmap = sns.diverging_palette(240,240, as_cmap=True)
+# sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
