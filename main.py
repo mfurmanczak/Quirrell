@@ -56,54 +56,57 @@ y = array[:, 23]
 # print(y)
 
 #array to store the indexes and corresponding accuracies
-indexes = []
-accuracies = []
+# indexes = []
+# accuracies = []
 
-for i in range(1,24):
-    #open file for results
-    
-    bestfeatures = SelectKBest(score_func=chi2, k=i)
-    fit = bestfeatures.fit(X,y)
-    # print(fit.scores_)
-    # print(fit.pvalues_)
+# for i in range(1,24):
+#open file for results
 
-    bestfeatures = fit.transform(X)
-    # print(get_feature_names_out(input_features=None))
-    # print(bestfeatures[0:10,:])
-    # print(bestfeatures.shape)
+bestfeatures = SelectKBest(score_func=chi2, k=10)
+fit = bestfeatures.fit(X,y)
+# print(fit.scores_)
+# print(fit.pvalues_)
 
-    #split into test and training set
-    x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
+bestfeatures = fit.transform(X)
+# print(get_feature_names_out(input_features=None))
+# print(bestfeatures[0:10,:])
+# print(bestfeatures.shape)
 
-    # print(np.info(object=bestfeatures))
+#split into test and training set
+x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
 
-    #build the model
-    Model = LogisticRegression(solver='liblinear', random_state=0)
-    Model.fit(x_train, y_train)
+# print(np.info(object=bestfeatures))
 
-    score = Model.score(x_test, y_test)
-    #make predictions
-    predictions1 = Model.predict(x_test)
-    # print(predictions1)
-    mse = mean_absolute_error(y_test, predictions1)
-    # print(mse)
-    indexes.append(i)
-    accuracies.append(accuracy_score(y_test, predictions1))
-    # print(classification_report(y_test, predictions1))
+#build the model
+Model = LogisticRegression(solver='liblinear', random_state=0)
+Model.fit(x_train, y_train)
+
+score = Model.score(x_test, y_test)
+
+#make predictions
+predictions1 = Model.predict(x_test)
+# print(predictions1)
+
+mse = mean_absolute_error(y_test, predictions1)
+# print(mse)
+
+# indexes.append(i)
+# accuracies.append(accuracy_score(y_test, predictions1))
+# print(classification_report(y_test, predictions1))
 
 #register results into results file
-    # f = open("resultschi2.txt", "a")
-    # f.write("****************CLASSIFICATION REPORT****************\n")
-    # f.write("*****************************************************\n")
-    # f.write("k = "+ str(i))    
-    # f.write("\n")
-    # f.write(classification_report(y_test, predictions1))
-    # f.write("\n")
-    # f.close()
+# f = open("resultschi2.txt", "a")
+# f.write("****************CLASSIFICATION REPORT****************\n")
+# f.write("*****************************************************\n")
+# f.write("k = "+ str(i))    
+# f.write("\n")
+# f.write(classification_report(y_test, predictions1))
+# f.write("\n")
+# f.close()
 
 #accuracy scattergram and plot
-sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
-sc.plot(x='indexes', y='accuracies')
+# sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
+# sc.plot(x='indexes', y='accuracies')
 # sc.plot.scatter(x='indexes', y='accuracies')
 # plt.scatter(indexes,accuracies)
 
@@ -123,13 +126,15 @@ results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 # plt.show()
+
 #testing model
 testing = pd.read_excel('data/testingset.xlsx')
 testing = testing.drop('Patient Id', axis = 1)
 
 testarray = testing.values
-Z = testarray[:, 0:23]
-print(Z)
 
-test_results = Model.predict(Z)
+bestfeatures = fit.transform(testarray)
+print(bestfeatures)
+
+test_results = Model.predict(bestfeatures)
 print(test_results)
