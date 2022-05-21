@@ -44,8 +44,8 @@ newdata = (df-df.mean())/df.std()
 newdata = df.corr()
 #print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(newdata, cmap='RdPu', interpolation='nearest')
-cmap = sns.diverging_palette(240,240, as_cmap=True)
-sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
+# cmap = sns.diverging_palette(240,240, as_cmap=True)
+# sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
@@ -70,7 +70,6 @@ fit = bestfeatures.fit(X,y)
 bestfeatures = fit.transform(X)
 # print(get_feature_names_out(input_features=None))
 # print(bestfeatures[0:10,:])
-# print(bestfeatures.shape)
 
 #split into test and training set
 x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
@@ -107,6 +106,8 @@ mse = mean_absolute_error(y_test, predictions1)
 #accuracy scattergram and plot
 # sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
 # sc.plot(x='indexes', y='accuracies')
+# sc = pd.DataFrame({'Level':df['Level'], 'Genetic Risk':df['Genetic Risk']})
+# sc.plot.scatter(x='Level', y='Genetic Risk')
 # sc.plot.scatter(x='indexes', y='accuracies')
 # plt.scatter(indexes,accuracies)
 
@@ -121,11 +122,11 @@ mse = mean_absolute_error(y_test, predictions1)
 # print(msg)
 
 #plot scattergram to verify relevancy of the results
-results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-results.plot.scatter(x='y_test', y='predictions1')
+# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+# results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-# plt.show()
+plt.show()
 
 #testing model
 testing = pd.read_excel('data/testingset.xlsx')
@@ -135,6 +136,9 @@ testarray = testing.values
 
 bestfeatures = fit.transform(testarray)
 print(bestfeatures)
+
+# print(bestfeatures[2,:])
+# print(testarray[2,:])
 
 test_results = Model.predict(bestfeatures)
 print(test_results)
