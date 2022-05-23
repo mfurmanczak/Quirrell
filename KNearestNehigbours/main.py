@@ -61,8 +61,6 @@ y = array[:, 23]
 # accuracies = []
 
 # for i in range(1,24):
-#open file for results
-
 bestfeatures = SelectKBest(score_func=chi2, k=10)
 fit = bestfeatures.fit(X,y)
 # print(fit.scores_)
@@ -77,8 +75,13 @@ x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0
 
 # print(np.info(object=bestfeatures))
 
-#build the model
-Model = KNeighborsClassifier(n_neighbors=9, weights='uniform', algorithm='auto')
+#build the 
+# indexes = []
+# accuracies = []
+
+# for i in range (1,50):
+
+Model = KNeighborsClassifier(n_neighbors=12, weights='uniform', algorithm='auto')
 Model.fit(x_train, y_train)
 
 score = Model.score(x_test, y_test)
@@ -90,12 +93,13 @@ predictions1 = Model.predict(x_test)
 mse = mean_absolute_error(y_test, predictions1)
 # print(mse)
 
-# indexes.append(i)
-# accuracies.append(accuracy_score(y_test, predictions1))
+
+    # indexes.append(i)
+    # accuracies.append(accuracy_score(y_test, predictions1))
 # print(classification_report(y_test, predictions1))
 
-confusion = metrics.confusion_matrix(y_test, predictions1)
-print(confusion,"\n")
+# confusion = metrics.confusion_matrix(y_test, predictions1)
+# print(confusion,"\n")
 
 #register results into results file
 # f = open("resultschi2.txt", "a")
@@ -103,7 +107,7 @@ print(confusion,"\n")
 # f.write("*****************************************************\n")
 # f.write("k = "+ str(i))    
 # f.write("\n")
-print(classification_report(y_test, predictions1))
+# print(classification_report(y_test, predictions1))
 # f.write("\n")
 # f.close()
 
@@ -116,18 +120,18 @@ print(classification_report(y_test, predictions1))
 # plt.scatter(indexes,accuracies)
 
 #test options and evaluation metric
-# num_folds = 5
-# seed = 3
-# scoring = 'accuracy'
+num_folds = 5
+scoring = 'accuracy'
 
-# kfold = KFold(n_splits=num_folds, random_state=None)
-# cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
-# msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
+kfold = KFold(n_splits=num_folds, random_state=None)
+cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
+msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 # print(msg)
+print(accuracy_score(y_test, predictions1))
 
 #plot scattergram to verify relevancy of the results
-results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-results.plot.scatter(x='y_test', y='predictions1')
+# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+# results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 plt.show()

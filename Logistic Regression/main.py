@@ -63,8 +63,6 @@ y = array[:, 23]
 # accuracies = []
 
 # for i in range(1,24):
-#open file for results
-
 bestfeatures = SelectKBest(score_func=chi2, k=10)
 fit = bestfeatures.fit(X,y)
 # print(fit.scores_)
