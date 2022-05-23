@@ -75,7 +75,8 @@ x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0
 # print(np.info(object=bestfeatures))
 
 #build the model
-Model = LinearSVC()
+# set dual to false because there are more samples than features in the dataset
+Model = LinearSVC(dual=False)
 Model.fit(x_train, y_train)
 
 score = Model.score(x_test, y_test)
