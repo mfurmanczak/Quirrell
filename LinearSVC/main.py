@@ -39,13 +39,13 @@ df['Level'] = df['Level'].astype(np.int64)
 df_aggr = df.agg({'mean','std'})
 #normalise data and print out head
 newdata = (df-df.mean())/df.std()
-#print(df.agg({'mean','std'}))
+print(df.agg({'mean','std'}))
 
 newdata = df.corr()
 #print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(newdata, cmap='RdPu', interpolation='nearest')
-# cmap = sns.diverging_palette(240,240, as_cmap=True)
-# sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
+cmap = sns.diverging_palette(240,240, as_cmap=True)
+sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
@@ -86,14 +86,14 @@ predictions1 = Model.predict(x_test)
 # print(predictions1)
 
 mse = mean_absolute_error(y_test, predictions1)
-# print(mse)
+print(mse)
 
 # indexes.append(i)
 # accuracies.append(accuracy_score(y_test, predictions1))
-# print(classification_report(y_test, predictions1))
+print(classification_report(y_test, predictions1), '\n')
 
-# confusion = metrics.confusion_matrix(y_test, predictions1)
-# print(confusion)
+confusion = metrics.confusion_matrix(y_test, predictions1)
+print(confusion)
 
 #register results into results file
 # f = open("resultschi2.txt", "a")
@@ -123,23 +123,23 @@ msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 print(msg)
 
 #plot scattergram to verify relevancy of the results
-# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-# results.plot.scatter(x='y_test', y='predictions1')
+results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-# plt.show()
+plt.show()
 
 #testing model
-# testing = pd.read_excel('data/testingset.xlsx')
-# testing = testing.drop('Patient Id', axis = 1)
+testing = pd.read_excel('data/testingset.xlsx')
+testing = testing.drop('Patient Id', axis = 1)
 
-# testarray = testing.values
+testarray = testing.values
 
-# bestfeatures = fit.transform(testarray)
-# print(bestfeatures)
+bestfeatures = fit.transform(testarray)
+print(bestfeatures)
 
 # print(bestfeatures[2,:])
 # print(testarray[2,:])
 
-# test_results = Model.predict(bestfeatures)
-# print(test_results)
+test_results = Model.predict(bestfeatures)
+print(test_results)

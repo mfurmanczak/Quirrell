@@ -40,13 +40,13 @@ df['Level'] = df['Level'].astype(np.int64)
 df_aggr = df.agg({'mean','std'})
 #normalise data and print out head
 newdata = (df-df.mean())/df.std()
-#print(df.agg({'mean','std'}))
+print(df.agg({'mean','std'}))
 
 newdata = df.corr()
 #print(df_corr.round(2).head(len(df_corr)))
 # plt.imshow(newdata, cmap='RdPu', interpolation='nearest')
-# cmap = sns.diverging_palette(240,240, as_cmap=True)
-# sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
+cmap = sns.diverging_palette(240,240, as_cmap=True)
+sns.heatmap(newdata, cmap=cmap, annot=True, annot_kws={"size":4.5})
 
 #split to input and output
 array = df.values
@@ -93,10 +93,10 @@ predictions1 = Model.predict(x_test)
 
     # indexes.append(i)
     # accuracies.append(accuracy_score(y_test, predictions1))
-# print(classification_report(y_test, predictions1))
+print(classification_report(y_test, predictions1), "\n")
 
-# confusion = metrics.confusion_matrix(y_test, predictions1)
-# print(confusion,"\n")
+confusion = metrics.confusion_matrix(y_test, predictions1)
+print(confusion,"\n")
 
 #register results into results file
 # f = open("resultschi2.txt", "a")
@@ -111,8 +111,8 @@ predictions1 = Model.predict(x_test)
 #accuracy scattergram and plot
 # sc = pd.DataFrame({'accuracies':accuracies, 'indexes':indexes})
 # sc.plot(x='indexes', y='accuracies')
-# sc = pd.DataFrame({'Level':df['Level'], 'Genetic Risk':df['Genetic Risk']})
-# sc.plot.scatter(x='Level', y='Genetic Risk')
+sc = pd.DataFrame({'Level':df['Level'], 'Genetic Risk':df['Genetic Risk']})
+sc.plot.scatter(x='Level', y='Genetic Risk')
 # sc.plot.scatter(x='indexes', y='accuracies')
 # plt.scatter(indexes,accuracies)
 
@@ -123,28 +123,28 @@ scoring = 'accuracy'
 kfold = KFold(n_splits=num_folds, random_state=None)
 cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
 msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
-print(msg)
-# print(accuracy_score(y_test, predictions1))
+print(msg, "\n")
+print(accuracy_score(y_test, predictions1), "\n")
 
 
 #plot scattergram to verify relevancy of the results
-# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-# results.plot.scatter(x='y_test', y='predictions1')
+results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 plt.show()
 
 #testing model
-# testing = pd.read_excel('data/testingset.xlsx')
-# testing = testing.drop('Patient Id', axis = 1)
+testing = pd.read_excel('data/testingset.xlsx')
+testing = testing.drop('Patient Id', axis = 1)
 
-# testarray = testing.values
+testarray = testing.values
 
-# bestfeatures = fit.transform(testarray)
-# print(bestfeatures)
+bestfeatures = fit.transform(testarray)
+print(bestfeatures)
 
 # print(bestfeatures[2,:])
 # print(testarray[2,:])
 
-# test_results = Model.predict(bestfeatures)
-# print(test_results)
+test_results = Model.predict(bestfeatures)
+print(test_results)
