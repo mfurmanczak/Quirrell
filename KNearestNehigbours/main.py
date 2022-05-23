@@ -126,8 +126,8 @@ scoring = 'accuracy'
 kfold = KFold(n_splits=num_folds, random_state=None)
 cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
 msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
-# print(msg)
-print(accuracy_score(y_test, predictions1))
+print(msg)
+# print(accuracy_score(y_test, predictions1))
 
 #plot scattergram to verify relevancy of the results
 # results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
