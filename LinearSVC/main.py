@@ -72,7 +72,7 @@ bestfeatures = fit.transform(X)
 # print(bestfeatures[0:10,:])
 
 #split into test and training set
-x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
+x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.4, random_state=0)
 
 # print(np.info(object=bestfeatures))
 

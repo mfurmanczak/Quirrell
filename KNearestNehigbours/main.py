@@ -14,7 +14,8 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2 
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from sklearn import KNearestNeighbors
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import metrics
 #import classification report
 from sklearn.metrics import classification_report
 #import KFold for tuning tests
@@ -72,12 +73,12 @@ bestfeatures = fit.transform(X)
 # print(bestfeatures[0:10,:])
 
 #split into test and training set
-x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.33, random_state=0)
+x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0.4, random_state=0)
 
 # print(np.info(object=bestfeatures))
 
 #build the model
-Model = LinearSVC()
+Model = KNeighborsClassifier(n_neighbors=9, weights='uniform', algorithm='auto')
 Model.fit(x_train, y_train)
 
 score = Model.score(x_test, y_test)
@@ -93,8 +94,8 @@ mse = mean_absolute_error(y_test, predictions1)
 # accuracies.append(accuracy_score(y_test, predictions1))
 # print(classification_report(y_test, predictions1))
 
-# confusion = metrics.confusion_matrix(y_test, predictions1)
-# print(confusion)
+confusion = metrics.confusion_matrix(y_test, predictions1)
+print(confusion,"\n")
 
 #register results into results file
 # f = open("resultschi2.txt", "a")
@@ -125,8 +126,8 @@ print(classification_report(y_test, predictions1))
 # print(msg)
 
 #plot scattergram to verify relevancy of the results
-# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-# results.plot.scatter(x='y_test', y='predictions1')
+results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
 plt.show()
