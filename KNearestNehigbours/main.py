@@ -14,7 +14,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2 
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from sklearn.svm import LinearSVC
+from sklearn import KNearestNeighbors
 #import classification report
 from sklearn.metrics import classification_report
 #import KFold for tuning tests

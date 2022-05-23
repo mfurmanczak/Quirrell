@@ -91,7 +91,7 @@ mse = mean_absolute_error(y_test, predictions1)
 
 # indexes.append(i)
 # accuracies.append(accuracy_score(y_test, predictions1))
-# print(classification_report(y_test, predictions1))
+print(classification_report(y_test, predictions1))
 
 #register results into results file
 # f = open("resultschi2.txt", "a")
@@ -126,19 +126,19 @@ mse = mean_absolute_error(y_test, predictions1)
 # results.plot.scatter(x='y_test', y='predictions1')
 
 #show plots
-plt.show()
+# plt.show()
 
 #testing model
-testing = pd.read_excel('data/testingset.xlsx')
-testing = testing.drop('Patient Id', axis = 1)
+# testing = pd.read_excel('data/testingset.xlsx')
+# testing = testing.drop('Patient Id', axis = 1)
 
-testarray = testing.values
+# testarray = testing.values
 
-bestfeatures = fit.transform(testarray)
-print(bestfeatures)
+# bestfeatures = fit.transform(testarray)
+# print(bestfeatures)
 
 # print(bestfeatures[2,:])
 # print(testarray[2,:])
 
-test_results = Model.predict(bestfeatures)
-print(test_results)
+# test_results = Model.predict(bestfeatures)
+# print(test_results)
