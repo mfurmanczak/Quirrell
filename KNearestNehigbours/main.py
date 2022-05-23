@@ -78,10 +78,9 @@ x_train, x_test, y_train, y_test = train_test_split(bestfeatures, y, test_size=0
 #build the 
 # indexes = []
 # accuracies = []
-
+# error = []
 # for i in range (1,50):
-
-Model = KNeighborsClassifier(n_neighbors=12, weights='uniform', algorithm='auto')
+Model = KNeighborsClassifier(n_neighbors=15, weights='uniform', algorithm='auto')
 Model.fit(x_train, y_train)
 
 score = Model.score(x_test, y_test)
@@ -89,8 +88,6 @@ score = Model.score(x_test, y_test)
 #make predictions
 predictions1 = Model.predict(x_test)
 # print(predictions1)
-
-mse = mean_absolute_error(y_test, predictions1)
 # print(mse)
 
 
@@ -128,6 +125,7 @@ cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfo
 msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
 print(msg)
 # print(accuracy_score(y_test, predictions1))
+
 
 #plot scattergram to verify relevancy of the results
 # results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
