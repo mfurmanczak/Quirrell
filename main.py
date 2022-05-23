@@ -63,7 +63,7 @@ y = array[:, 23]
 indexes = []
 accuracies = []
 for i in range(1,24):
-    f = open("resultsanova.txt", "a")
+    
     bestfeatures = SelectKBest(score_func=f_classif, k=10)
     fit = bestfeatures.fit(X,y)
     # print(fit.scores_)
@@ -98,6 +98,8 @@ for i in range(1,24):
     accuracies.append(accuracy_score(y_test, predictions1))
 
     # print(classification_report(y_test, predictions1))
+    f = open("resultsanova.txt", "a")
+    f.write("****************CLASSIFICATION REPORT****************\n")
     f.write("*****************************************************\n")
     f.write("k = "+ str(i))    
     f.write("\n")
