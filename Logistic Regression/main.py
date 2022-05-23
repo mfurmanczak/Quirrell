@@ -20,7 +20,9 @@ from sklearn import metrics
 from sklearn.metrics import classification_report
 #import KFold for tuning tests
 from sklearn.model_selection import KFold
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_val_score
+from sklearn.svm import SVC
 #import accuracy_score to retrieve accuracy from predictions
 from sklearn.metrics import accuracy_score
 
@@ -92,7 +94,7 @@ mse = mean_absolute_error(y_test, predictions1)
 
 # indexes.append(i)
 # accuracies.append(accuracy_score(y_test, predictions1))
-print(classification_report(y_test, predictions1))
+# print(classification_report(y_test, predictions1))
 
 # confusion = metrics.confusion_matrix(y_test, predictions1)
 # print(confusion)
@@ -116,21 +118,20 @@ print(classification_report(y_test, predictions1))
 # plt.scatter(indexes,accuracies)
 
 #test options and evaluation metric
-# num_folds = 5
-# seed = 3
-# scoring = 'accuracy'
+num_folds = 5
+scoring = 'accuracy'
 
-# kfold = KFold(n_splits=num_folds, random_state=None)
-# cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
-# msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
-# print(msg)
+kfold = KFold(n_splits=num_folds, random_state=None)
+cv_results = cross_val_score(Model, x_train, y_train, scoring='accuracy', cv=kfold)
+msg = '%f (%f)'%(cv_results.mean(), cv_results.std())
+print(msg)
 
 #plot scattergram to verify relevancy of the results
-results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
-results.plot.scatter(x='predictions1', y='y_test')
+# results = pd.DataFrame({'y_test':y_test, 'predictions1':predictions1})
+# results.plot.scatter(x='predictions1', y='y_test')
 
 #show plots
-plt.show()
+# plt.show()
 
 #testing model
 # testing = pd.read_excel('data/testingset.xlsx')
